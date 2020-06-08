@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Being Through</title>
+</head>
+
+<body class="note-body">
+
+    <div class="tm-main-container">
+        <div class="tm-top-container">
+            <div class="tm-page-header tm-header-1">
+                <div class="tm-page-header-flex">
+                    <div class="tm-page-head-h2">
+                        <h2 id="tm-head-h2" class="tm-text-blue mt-2">Notes for Programming</h2>
+                    </div>
+                    <div id="tm-backsign" class="tm-site-back-box tm-bg-light " data-linkid="0" data-articleid="0"
+                        data-align="left">
+                        <img id="tm-backimg" src="img/backleft.png">
+                    </div>
+                </div>
+            </div>
+
+            <!-- tm-top-container -->
+        </div>
+
+        <!-- Site content -->
+        <div class="tm-content">
+            <!-- Section 1 About Me -->
+            <section id="notepage" class="tm-section tm-section-1" data-type="0">
+
+                <div class="tm-textbox" data-color="white8">
+                    <section id="section-head">
+                        <h2>Ch.9 Kotlin 標準庫&nbsp;&nbsp;
+                            <div class="text-break" data-type="mobile-min"><br></div>
+
+                            <span class="tm-text-grey-d">Ch.9 Kotlin
+                                Standard Library</span>
+                        </h2>
+
+                        <P>Kotlin標準庫( Kotlin Standard Library ) aka kotlin-stdlib, 就是一個裝了很多好用的擴展函式 (
+                            extension function )的函式庫，用IDE導入的話是 kotlin-stdlib-sources.jar
+                            這個檔案，其中包含了許多的函式，大致上為:</P>
+                        <div class="list8">
+                            <ul>
+                                <li>實作了慣用模式的高階函數 ( Higher-odrer functions )&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <div class="text-break" data-type="1190"><br></div>
+                                    <span class="tm-text-annotation">&nbsp;&nbsp;Higher-odrer
+                                        functions :
+                                        <span>可以接受或回傳 function 的 function.</span>
+                                    </span>
+
+
+                                </li>
+                                <li>可以操作 collections 以及 sequences 的擴展函式</li>
+                                <li>一些用以操作 strings 以及 char 的函式</li>
+                                <li>JDK classes 的擴展函式，方便操作 files、IO、threading.</li>
+                            </ul>
+                        </div>
+                        <P>本章節將介紹位於標準庫中 Standard.kt 這個檔案所涵蓋的作用域函數 ( scope function ) :
+                            apply、let、run、with、also
+                            這些函數做的事情都是一樣的，使用者可以根據語意以及存取的對象不同去選擇要使用哪一個。除了上述五個函數外，位於 Standard.kt 還有
+                            takeIf、takeUnless、reapeat、TODO。</P>
+                        <div class="txt-left">
+                            <b>
+                                <div class="txt-left-break">
+                                    <span class="tm-text-higrey">
+                                        <span class="tm-text-parameter">Let&nbsp;it&nbsp;</span>
+                                        <span class="tm-text-receiver">Run&nbsp;this&nbsp;</span>
+                                        <span class="tm-text-white-3">literal,&nbsp;</span>
+                                    </span>
+
+                                    <span class="tm-text-higrey">
+                                        <span class="tm-text-parameter"> it&nbsp;Also&nbsp;</span>
+                                        <span class="tm-text-receiver">Apply&nbsp;this</span>
+                                    </span>
+
+                                </div>
+                            </b>
+                            <span><sub>出自<a href="https://julianchu.net/2018/05/05-kotlin.html"
+                                        rev="en_rl_none">Walkingice的部落格</a></sub></span>
+                        </div>
+                    </section><!-- id="section-head"-->
+                    <section id="section-pre">
+                        <h3><b>前情提要:</b></h3>
+                        <P>在開始之前先認識一些名詞:</P>
+                        <div class="list8">
+                            <ul>
+                                <li>內聯函式 ( inline function ) 在編譯時期，將函式整個造抄到呼叫他的地方</li>
+                                <li>Kotlin 中有一種類型稱為 函數類型 ( function types) :
+                                    <div class="text-break" data-type="mobile" data-special="mobile-nb"><br></div>
+                                    <span class="tm-text-higrey ">
+                                        ( A, B )&nbsp; -&gt;&nbsp; C&nbsp;
+
+                                    </span>
+                                    <div class="text-space">
+                                        <div class="text-inline">
+
+                                            <div class="text-space-item" data-type="brakeable">
+
+                                                <span>
+                                                    <span class="">val sayHello</span>:
+                                                    <span class="tm-text-higrey">(&nbsp;
+                                                        <span class="tm-text-parameter">String&nbsp;</span>
+                                                        ) -&gt;
+                                                        <span class="tm-text-returntype">Unit</span>
+                                                    </span>
+                                                </span>
+                                                <div class="text-space-item" data-type="breaksub">
+                                                    <span class="m-l-3">
+                                                        =
+                                                        <span class="tm-text-hiwhite-3 tm-text-uliteral">
+                                                            fun (
+                                                            <span class="tm-text-parameter"> name: String
+                                                            </span>):
+                                                            <span class="tm-text-returntype">Unit&nbsp;
+                                                            </span>
+                                                            <div class="text-break" data-type="mobile"><br></div>
+                                                            <span>{ println( "Hello $name" ); }</span>
+                                                        </span>
+
+                                                    </span>
+                                                    <sub class="tm-text-literal">Lambda 表達式</sub>
+                                                </div>
+                                            </div>
+                                            <div class="text-space-item" data-type="brakeable">
+                                                <span>
+                                                    <span class="">val sayHello</span>:
+                                                    <span class="tm-text-higrey">(&nbsp;
+                                                        <span class="tm-text-parameter">String&nbsp;</span>
+                                                        ) -&gt;
+                                                        <span class="tm-text-returntype">Unit</span>
+                                                    </span>
+                                                </span>
+                                                <div class="text-space-item" data-type="breaksub">
+                                                    <span class="m-l-3">
+                                                        =
+                                                        <span class="tm-text-hiwhite-3 tm-text-uliteral">
+                                                            {
+                                                            <span class="tm-text-hipink">it</span>
+                                                            -&gt;
+                                                            <div class="text-break" data-type="mobile2"><br></div>
+                                                            <span>println( "Hello
+                                                                <span class="tm-text-hipink">$it</span>" )
+
+                                                            </span>
+                                                            }
+                                                        </span>
+
+                                                    </span>
+                                                    <sub class="tm-text-literal">匿名函式 </sub>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="text-break" data-type="padM">
+                                            <div class="text-space-item">
+                                                <span class="">val sayHello</span>:
+                                                <span class="tm-text-higrey">(&nbsp;
+                                                    <span class="tm-text-parameter">String&nbsp;</span>
+                                                    ) -&gt;
+                                                    <span class="tm-text-returntype">Unit</span>
+                                                </span>
+                                                <sup class="tm-text-literal"
+                                                    style="margin-left: 130px; margin-top: 25px;">Lambda 表達式</sup>
+                                            </div>
+                                            <div class="text-space-item" style="margin-left: 30px;">
+                                                =
+                                                <span class="tm-text-hiwhite-3 tm-text-uliteral">fun (
+                                                    <span class="tm-text-parameter"> name: String
+                                                    </span>):
+                                                    <span class="tm-text-returntype">Unit&nbsp;
+                                                    </span>{ println( "Hello $name" ); }
+                                                </span>
+
+                                            </div>
+                                            <div class="text-space-item">
+                                                <span class="">val sayHello</span>:
+                                                <span class="tm-text-higrey">(&nbsp;
+                                                    <span class="tm-text-parameter">String&nbsp;</span>
+                                                    ) -&gt;
+                                                    <span class="tm-text-returntype">Unit</span>
+                                                </span>
+                                                <sup class="tm-text-literal"
+                                                    style="margin-left: 50px; margin-top: 25px;">匿名函式</sup>
+                                            </div>
+                                            <div class="text-space-item" style="margin-left: 30px;">
+                                                =
+                                                <span class="tm-text-hiwhite-3 tm-text-uliteral">{
+                                                    <span class="tm-text-hipink">it</span> -&gt;
+                                                    println( "Hello
+                                                    <span class="tm-text-hipink">$it</span>" ) }
+                                                </span>
+
+                                            </div>
+                                        </div> -->
+                                        <ul>
+                                            <li><span class="tm-text-hiwhite-3">function literal</span>:
+                                                用來定義function的語法，可以是Lambda表達式 ( Lambda
+                                                Expression ) 或是 匿名函式 ( Anonymous Function
+                                                )。例如上面的程式碼中，等式後面的表述式就稱之為 function literal</li>
+                                            <li>
+                                                receiver type : <span class="tm-text-higrey"> <span
+                                                        class="tm-text-receiver"> T</span>.(
+                                                    <span class="tm-text-parameter">A</span> ) -&gt;&nbsp; <span
+                                                        class="tm-text-returntype">C</span></span>
+                                                其中<span class="tm-text-receiver"> T </span>為 receiver object。
+                                                <br>
+                                                receiver 在 function body { &nbsp;}
+                                                中可以用 <span class="tm-text-hireceiver">this</span>
+                                                來代替，這樣我們可以呼叫這個類別的方法，或其他成員。
+                                                <br>
+                                                另外，參數 <span class="tm-text-parameter">A</span> 可以用 <span
+                                                    class="tm-text-hipink">it</span> 關鍵字呼叫，其中<span
+                                                    class="tm-text-hipink">it</span>為預設字，可以自行取適合的參數名。
+                                                <br>
+                                                舉個例子:
+
+                                            </li>
+                                            <li style="list-style : none;">
+                                                <div class="text-space-block" data-size="small">
+                                                    <div class="text-space-block-b" data-size="small">
+
+                                                        <div class="text-space-item">
+
+                                                            <span>val
+                                                                sayHey:
+                                                                <span class="tm-text-receiver">String</span>.(
+                                                                <span class="tm-text-parameter">String</span>)
+                                                                -&gt;
+                                                                <span class="tm-text-returntype">String</span>
+                                                            </span>
+
+                                                        </div>
+                                                        <div class="text-space-item ">
+
+                                                            <span> = fun
+                                                                <span class="tm-text-receiver">String</span>.(
+                                                                <span class="tm-text-parameter">name:
+                                                                    String</span>):
+                                                                <span class="tm-text-returntype">String</span>
+                                                                {
+                                                            </span>
+
+                                                        </div>
+                                                        <div class="text-space-item" style="margin-left: 30px;">
+
+                                                            <span>
+                                                                return
+                                                                <span data-highlight="purple"
+                                                                    class="tm-text-hireceiver">this</span>.plus(
+                                                                <span data-highlight="red"
+                                                                    class="tm-text-hipink">name</span>)
+                                                            </span>
+
+
+                                                        </div>
+                                                        <div class="text-space-item  ">
+                                                            <span class="LUa17" data-fontfamily="monospace">}</span>
+                                                            </span>
+                                                        </div>
+
+
+                                                    </div>
+                                                    
+                                                    <span class="mt-5">=>改成匿名函式</span>
+                                                  
+                                                    <div class="text-space-block-b" data-size="small">
+                                                        <div class="text-space-item">
+
+                                                            <span>val
+                                                                sayHey:
+                                                                <span class="tm-text-receiver">String</span>.(
+                                                                <span class="tm-text-parameter">String</span>)
+                                                                -&gt;
+                                                                <span class="tm-text-returntype">String</span>
+                                                            </span>
+
+                                                        </div>
+                                                        <div class="text-space-item ">
+
+                                                            <span> = {
+
+                                                            </span>
+
+                                                        </div>
+                                                        <div class="text-space-item" style="margin-left: 30px;">
+
+                                                            <span>
+                                                                <span class="tm-text-parameter">it</span>
+                                                                -&gt;&nbsp;
+                                                                <span data-highlight="purple"
+                                                                    class="tm-text-hireceiver">this</span>.plus(
+                                                                <span data-highlight="red"
+                                                                    class="tm-text-hipink">it</span>)
+                                                            </span>
+
+
+                                                        </div>
+                                                        <div class="text-space-item  ">
+                                                            <span class="LUa17" data-fontfamily="monospace">}</span>
+                                                            </span>
+                                                        </div>
+
+                                                    </div>
+                                                    
+                                                    <span class="mt-5">=>省略 it 跟 this</span>
+                                                   
+                                                    <div class="text-space-block-b" data-size="small">
+                                                        <div class="text-space-item">
+
+                                                            <span>val
+                                                                sayHey:
+                                                                <span class="tm-text-receiver">String</span>.(
+                                                                <span class="tm-text-parameter">String</span>)
+                                                                -&gt;
+                                                                <span class="tm-text-returntype">String</span>
+                                                            </span>
+
+                                                        </div>
+                                                        <div class="text-space-item ">
+
+                                                            <span> = {
+
+                                                            </span>
+
+                                                        </div>
+                                                        <div class="text-space-item" style="margin-left: 30px;">
+
+                                                            <span>
+
+
+                                                                plus(
+                                                                <span data-highlight="red"
+                                                                    class="tm-text-hipink">it</span>)
+                                                            </span>
+
+
+                                                        </div>
+                                                        <div class="text-space-item  ">
+                                                            <span class="LUa17" data-fontfamily="monospace">}</span>
+                                                            </span>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                </li>
+                                <li>作用域函數 ( scope function )：會創建一個臨時的作用域，在這個作用域內可以訪問作用的對象而不需要指定名稱。
+                                    <br> let, run, also, apply, with都屬於作用域函數 ( scope function
+                                    )，這些函數做的事情都是一樣的，差別在於
+                                    <ol class="">
+                                        <li>訪問對象的兩種方式
+                                            <ul class="ml-5">
+                                                <li>將訪問對象作為lambda receiver ( <span
+                                                        class="tm-text-hireceiver">this</span>
+                                                    )</li>
+                                                <li>將訪問對象作為lambda argument ( <span class="tm-text-hipink">it</span> )
+                                                </li>
+                                            </ul>
+
+                                        </li>
+
+                                        <li>返回值
+                                            <ul class="ml-5">
+                                                <li>返回對象本身</li>
+                                                <li>返回最後的結果</li>
+                                            </ul>
+                                        </li>
+                                    </ol>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </section><!-- id="section-pre"-->
+
+                    <!--APPLY-->
+                    <section id="section-apply">
+                        <h3><b>apply</b></h3>
+                        <P>apply的原始碼:</P>
+
+                        <div class="text-space-block">
+                            <div class="text-space-block-blue">
+                                <div class="text-space-item">
+                                    <ul>
+                                        <li>
+                                            <div class="vis">
+                                                <div class="vis" data-type="top-left">
+                                                    <div class="vis" data-type="up">
+                                                        <span class="tm-text-receiver">接收者</span> 可以是任何類型
+                                                        <span class="tm-text-receiver">T </span>
+                                                    </div>
+                                                    <span class="vis" data-type="bottom"><img
+                                                            src="./img/turn-up.svg"></span>
+                                                </div>
+
+
+                                                <div class="vis" data-type="top-right">
+                                                    <div class="vis" data-type="up-r">
+                                                        <span>
+                                                            <span class="tm-text-returntype">返回值</span>
+                                                            <span>是receiver object本人</span>
+                                                        </span>
+                                                    </div>
+                                                    <span class="vis" data-type="bottom-r"><img
+                                                            src="./img/turn-up-r.svg"></span>
+
+                                                </div>
+
+                                            </div>
+                                        </li>
+                                        <li>
+
+                                            <!--public inline fun <T> T.apply ( block: T.( ) -> Unit): T {-->
+                                            <span>
+                                                public inline fun &lt;T&gt;
+                                                <span class="tm-text-receiver">T</span>.apply ( block:
+                                                <span class="tm-text-receiver">T</span>.(&nbsp;)
+                                                -&gt;
+                                                <span class="tm-text-returntype">Unit</span>): <span
+                                                    class="tm-text-hireceiver">T</span> {
+                                            </span>
+
+                                        </li>
+                                        <li>
+                                            <div style="margin-left: 270px; margin-top: -20px; font-size: 14px;">
+                                                <span style="margin-top: 0px;" class="vis"><img
+                                                        src="./img/turn-down.svg"></span>
+                                            </div>
+                                            <div style="margin-left: 200px; margin-top: -50px; font-size: 14px;">
+                                                <span class="vis">
+                                                    不接收<span class="tm-text-parameter">參數</span>
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <ul>
+                                            <li> <span class="tm-text-hireceiver">this</span>.block()
+                                                <span class="tm-text-comment">//this可以省略</span>
+                                            </li>
+                                            <li>
+                                                <span>
+                                                    return
+                                                    <span class="tm-text-hireceiver">this</span>
+                                                    <span class="tm-text-comment ">//回傳自己</span>
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span
+                                                    class="tm-text-comment">//當初我在學習的時候，想說block()沒有接收參數，為何許多apply的應用都是有帶參數的?</span>
+                                            </li>
+
+                                            <li>
+                                                <span class="tm-text-comment">//但lambda
+                                                    expressions本來就可以有多行，且scope裡可以呼叫this的properties跟function</span>
+                                            </li>
+                                            <li>
+                                                <span class="tm-text-comment">//如果lambda只接收一個參數且是個lambda又可以移入function
+                                                    body中，</span>
+                                            </li>
+                                            <li><span class="tm-text-comment">//因此容易混淆不太容易讀懂</span>
+                                            </li>
+
+                                        </ul>
+                                        <li> <span>}</span></li>
+
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="text-space-text">
+
+                                apply 可視為配置函數 ( configuration function )，此函數作用於 接收者 ( receiver
+                                )，用來呼叫一連串的函數來設定此接收者，並回傳被設定好的 接收者 ( receiver )。
+                                <br>其實Apply就是一個喜歡<span
+                                    style="text-decoration: line-through;">自編自導自演</span>的語法糖，語意讀起來像是"apply
+                                the following assignments to the object.” ( 給這個接收者指派下列任務)
+
+                            </div>
+
+                        </div>
+
+                    </section><!-- id="section-apply"-->
+                    <section id="section-use-apply">
+                        <P>怎麼使用:</P>
+
+                        <div class="text-space-block">
+                            <div class="text-space-block-b" data-align="left">
+                                <div class="text-space-item">
+                                    <ul style="list-style-type: none; flex-shrink: 0;">
+                                        <li>class Actor { </li>
+                                        <li>
+                                            <ul style="list-style-type: none;">
+                                                <li>var name = "李羅" </li>
+                                                <li>var characterName = "無"</li>
+                                                <li>var level= "高級"</li>
+                                                <li>var dramaName = "無" </li>
+                                                <li>var hairStyle = "中長黑髮"</li>
+                                            </ul>
+                                        </li>
+                                        <li>}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="text-space-block-b" data-align="right">
+                                <div class="text-space-item">
+                                    <ul style="list-style-type: none; flex-shrink: 0;"">
+                                        <li>fun main() { </li>
+                                        <li style="margin-left: 30px;"> val actor = Actor( ).apply {</li>
+                                        <li style="margin-left: 60px;">
+                                            <span>dramaName = "意難忘"<br>
+                                                characterName = "杜文杰"<br>
+                                                hairStyle = "黑社會油頭"<br> </span>
+                                        </li>
+                                        <li style="margin-left: 30px;"> }</li>
+                                        <li style="margin-left: 30px;">
+                                            <p>println( actor.characterName + " : " + actor.hairStyle )</p>
+                                        </li>
+                                        <li>}</li>
+                                        <li><span class="tm-text-comment">//輸出> 杜文杰 : 黑社會油頭</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </section><!-- id="section-use-apply"-->
+                    <!--APPLY-->
+
+                    <!--ALSO-->
+                    <section id="section-also">
+                        <h3><b>also</b></h3>
+                        <P>also的原始碼:</P>
+                        <div class="text-space-block">
+                            <div class="text-space-block-blue">
+                                <ul>
+                                    <li>
+                                        <div class="text-space-item">
+
+                                            <!-- public inline fun <T> T.also ( block: ( T ) -> Unit): T { -->
+                                            <span>
+                                                public inline fun &lt;T&gt;
+                                                <span class="tm-text-receiver">T</span>.also ( block:
+                                                (&nbsp;<span class="tm-text-receiver">T</span>&nbsp;)
+                                                -&gt;
+                                                <span class="tm-text-returntype">Unit</span>): <span
+                                                    class="tm-text-hireceiver">T</span> {
+                                            </span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div style="margin-left: 290px; margin-top: -35px; font-size: 14px;">
+                                            <span style="margin-top: 0px;"><img src="./img/turn-down.svg"></span>
+                                        </div>
+                                        <div style="margin-left: 120px; margin-top: -35px; font-size: 14px;">
+                                            <span>
+                                                <span class="tm-text-parameter">參數</span>
+                                                <span>是receiver object本人</span>
+                                            </span>
+                                        </div>
+                                    </li>
+                                    <ul>
+                                        <li>
+                                            <div class="text-space-item" style="margin-top: 0px;">
+                                                <span>
+                                                    block(<span class="tm-text-hireceiver">this</span>)
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li>
+
+                                            <div class="text-space-item">
+                                                <span>
+                                                    return
+                                                    <span class="tm-text-hireceiver">this</span><span
+                                                        class="tm-text-comment ">//回傳自己</span>
+                                                </span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <li>
+                                        <div class="text-space-item">
+                                            <span>}</span>
+
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="text-space-text">
+
+                                also 跟 apply 都是回傳 receiver object 本身，，語意讀起來像是"it also do the
+                                following with the object.” ( 這個接收者也做了下列事項)
+
+                            </div>
+
+                        </div>
+
+                    </section><!-- id="section-also"-->
+                    <section id="section-use-also">
+                        <P>怎麼使用:</P>
+
+                        <div class="text-space-block">
+                            <div class="text-space-block-b" data-align="left">
+                                <div class="text-space-item">
+                                    <ul style="list-style-type: none; flex-shrink: 0;">
+                                        <li>class Actor { </li>
+                                        <li>
+                                            <ul style="list-style-type: none;">
+                                                <li>var name = "李羅" </li>
+                                                <li>var characterName = "無"</li>
+                                                <li>var level= "高級"</li>
+                                                <li>var dramaName = "無" </li>
+                                                <li>var hairStyle = "中長黑髮"</li>
+                                            </ul>
+                                        </li>
+                                        <li>}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="text-space-block-b" data-align="right">
+                                <div class="text-space-item">
+                                    <ul style="list-style-type: none;">
+                                        <li>fun takeAnOtherDrama(actor: Actor, drama: String) {</li>
+                                        <li style="margin-left: 30px;">println(" ${ actor.name } also acting
+                                            the character in $drama")</li>
+                                        <li>}</li>
+                                        <li>fun main() { </li>
+                                        <li style="margin-left: 30px;">
+
+                                            val words = Actor( ).also {</li>
+                                        <li style="margin-left: 60px;">
+                                            <span> takeAnOtherDrama(<span class="tm-text-hipink">it</span>, "親戚不計較")
+                                            </span>
+                                        </li>
+                                        <li style="margin-left: 30px;"> }</li>
+
+                                        <li>}</li>
+                                        <li><span class="tm-text-comment">//輸出> 李羅 also acting the character in
+                                                親戚不計較</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </section><!-- id="section-use-also"-->
+                    <!--ALSO-->
+
+                    <!--TIP 1-->
+                    <section id="section-tip1">
+                        <h3><b>小撇步:</b></h3>
+                        <P>上面兩種都是回傳 receiver object本身，因此當需要同一個物件作很多不同的事情時，可以互相結合作鍊式呼叫 (  call chains )
+                            <br>例如將上面兩個範例結合:</P>
+                        <div class="text-space-block">
+                            <div class="text-space-block-b" data-align="left">
+                                <div class="text-space-item">
+                                    <ul style="list-style-type: none; flex-shrink: 0;">
+                                        <li>class Actor { </li>
+                                        <li>
+                                            <ul style="list-style-type: none;">
+                                                <li>var name = "李羅" </li>
+                                                <li>var characterName = "無"</li>
+                                                <li>var level= "高級"</li>
+                                                <li>var dramaName = "無" </li>
+                                                <li>var hairStyle = "中長黑髮"</li>
+                                            </ul>
+                                        </li>
+                                        <li>}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="text-space-block-b" data-align="right">
+                                <div class="text-space-item">
+                                    <ul style="list-style-type: none;">
+                                        <li>fun takeAnOtherDrama(actor: Actor, drama: String) {</li>
+                                        <li style="margin-left: 30px;">println(" ${ actor.name } also acting
+                                            the character in $drama")</li>
+                                        <li>}</li>
+                                        <li>fun main() { </li>
+                                        <li style="margin-left: 30px;">
+                                            val actor = Actor( ).apply {</li>
+                                        <li style="margin-left: 60px;">
+                                            <span>dramaName = "意難忘"<br>
+                                                characterName = "杜文杰"<br>
+                                                hairStyle = "黑社會油頭"<br> </span>
+                                        </li>
+                                        <li style="margin-left: 30px;"> }.also {</li>
+                                        <li style="margin-left: 60px;">
+                                            <p>takeAnOtherDrama(it, "親戚不計較")
+                                            </p>
+                                        </li>
+                                        <li style="margin-left: 30px;"> }</li>
+                                        <li style="margin-left: 30px;"> println("目前在 ${actor.dramaName} 中" +
+                                            <br>"飾演 ${actor.characterName}，髮型為 ${actor.hairStyle}") </li>
+                                        <li>}</li>
+                                        <li><span class="tm-text-comment">//輸出> 李羅 also acting the character in
+                                                親戚不計較</span></li>
+                                        <li><span class="tm-text-comment">//輸出> 目前在 意難忘 中飾演 杜文杰，髮型為
+                                                黑社會油頭</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                    </section><!-- id="section-tip1"-->
+                    <!--TIP 1-->
+
+                    <div
+                        style="display: inline-flex; flex-direction: row; font-size: 40px; width: 100%; margin:20px 0;">
+                        <hr style="width: 30%; height: 2px; border: none; background-color: #5F6A61">
+                        <i class="twicon-flying-fish"></i>
+                        <hr style="width: 5%; height: 2px; border: none; background-color: #5F6A61">
+                        <i class="twicon-flying-fish"></i>
+                        <hr style="width: 10%; height: 2px; border: none; background-color: #5F6A61">
+                        <i class="twicon-flying-fish"></i>
+                        <hr style="width: 45%; height: 2px; border: none; background-color: #5F6A61">
+                    </div>
+
+                    <!--LET-->
+                    <section id="section-let">
+                        <h3><b>let</b></h3>
+                        <P>let的原始碼:</P>
+                        <div class="text-space-block">
+                            <div class="text-space-block-blue">
+                                <ul>
+                                    <li>
+                                        <div class="text-space-item" style="margin-left: -50px; margin-bottom: -25px; ">
+
+                                            <span class="tm-text-receiver">接收者 ( receiver )</span>
+                                            <span>可以是任何類型</span>
+                                            <span class="tm-text-receiver">T </span>
+                                            <span style="margin-left: 80px;"><span
+                                                    class="tm-text-returntype">返回值</span>是任何類型R</span>
+
+                                        </div>
+                                        <div class="text-space-item" style="margin-left: 160px; margin-bottom: -35px;">
+                                            <span><img src="./img/turn-up.svg"></span><span
+                                                style="margin-left: 190px;"><img src="./img/turn-up-r.svg"></span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <!-- public inline fun <T, R>  T.let ( block: ( T ) -> R): R { -->
+                                        <div class="text-space-item">
+                                            <span>
+                                                public inline fun &lt;T, R&gt;&nbsp;
+                                                <span class="tm-text-receiver">T</span>.let ( block:
+                                                (&nbsp;<span class="tm-text-receiver">T</span>&nbsp;)
+                                                -&gt;
+                                                <span class="tm-text-returntype">R</span>): <span
+                                                    class="tm-text-returntype">R</span>
+                                                {
+                                            </span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div style="margin-left: 310px; margin-top: -35px; font-size: 14px;">
+                                            <span style="margin-top: 0px;"><img src="./img/turn-down.svg"></span>
+                                        </div>
+                                        <div class="text-space-item" style="margin-left: 190px; margin-top: -15px; font-size: 14px;">
+                                            <span>
+                                                <span class="tm-text-parameter">參數</span>
+                                                <span>是receiver object本人</span>
+                                            </span>
+                                        </div>
+                                    </li>
+                                    <ul>
+                                        <li>
+                                            <div class="text-space-item ml-5">
+                                                <span>
+                                                    return&nbsp;
+                                                    block(<span class="tm-text-hireceiver">this</span>)<span
+                                                        class="tm-text-comment ">//回傳的是block(this)所回傳的R</span>
+                                                </span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <li>
+                                        <div class="text-space-item">
+                                            <span>}</span>
+
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="text-space-text">
+                                let 把自己託付給block，然後就 let it be let it be
+
+                            </div>
+
+                        </div>
+
+                    </section><!-- id="section-let"-->
+                    <section id="section-use-let">
+                        <P>怎麼使用:</P>
+
+                        <div class="text-space-block">
+                            <div class="text-space-block-b" data-align="left">
+                                <div class="text-space-item">
+                                    <ul style="list-style-type: none; flex-shrink: 0;">
+                                        <li>class Actor { </li>
+                                        <li>
+                                            <ul style="list-style-type: none;">
+                                                <li>var name = "李羅" </li>
+                                                <li>var characterName = "無"</li>
+                                                <li>var level= "高級"</li>
+                                                <li>var dramaName = "無" </li>
+                                                <li>var hairStyle = "中長黑髮"</li>
+                                            </ul>
+                                        </li>
+                                        <li>}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="text-space-block-b" data-align="right">
+                                <div class="text-space-item">
+                                    <ul style="list-style-type: none;">
+                                        <li>fun defineTheRestRoom(actor: Actor): String{</li>
+                                        <li style="margin-left: 30px;">if(actor.level == "高級") return "VIP室"
+                                        </li>
+                                        <li style="margin-left: 30px;"> else return "一般休息室" </li>
+                                        <li>}</li>
+                                        <li>fun main() { </li>
+                                        <li style="margin-left: 30px;">
+
+                                            val actor = Actor() {</li>
+                                        <li style="margin-left: 30px;">
+
+                                            val room = actor.let{ </li>
+                                        <li style="margin-left: 60px;">
+                                            <span> defineTheRestRoom(<span class="tm-text-hipink">it</span>)
+                                            </span>
+                                        </li>
+                                        <li style="margin-left: 30px;"> }</li>
+                                        <li style="margin-left: 30px;"> println("帶這個演員到 $room")</li>
+
+                                        <li>}</li>
+                                        <li><span class="tm-text-comment">//輸出> 帶這個演員到 VIP室</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </section><!-- id="section-use-let"-->
+                    <!--LET-->
+
+                    <!--RUN-->
+                    <section id="section-run">
+                        <h3><b>run</b></h3>
+                        <P>run的原始碼:</P>
+                        <div class="text-space-block">
+                            <div class="text-space-block-blue">
+                                <div class="text-space-item">
+                                    <span style="margin-left: 280px; margin-bottom: -45px;"><span
+                                            class="tm-text-returntype">返回值</span>是任何類型R</span>
+                                </div>
+                                <div class="text-space-item">
+                                    <span style="margin-left: 360px; margin-bottom: -45px;"><img
+                                            src="./img/turn-up-r.svg"></span>
+                                </div>
+                                <div class="text-space-item">
+                                    <span>
+                                        public inline fun &lt;T, R&gt;&nbsp;
+                                        <span class="tm-text-receiver">T</span>.run ( block:
+                                        <span class="tm-text-receiver">T</span>.()
+                                        -&gt;
+                                        <span class="tm-text-returntype">R</span>): <span
+                                            class="tm-text-returntype">R</span>
+                                        {
+                                    </span>
+                                </div>
+                                <div class="text-space-item ml-5">
+                                    <span>
+                                        return&nbsp;
+                                        block()<span class="tm-text-comment ">//回傳的是block()所回傳的R</span>
+                                    </span>
+                                </div>
+                                <div class="text-space-item">
+                                    <span>}</span>
+
+                                </div>
+
+                            </div>
+
+                            <div class="text-space-text">
+                                run 有兩種形式一種是有接收者。有接收者的 run 和 apply
+                                有點像，都可以拿來初始化接收者，但回傳的是最後一個表達式，而不是接收者本身
+
+                            </div>
+
+                        </div>
+
+                    </section>
+                    <section id="section-run" style="margin-top: 1px;">
+                        <div class="text-space-block">
+                            <div class="text-space-block-blue" style="font-size: 18px; padding-right: 110px;">
+
+                                <div class="text-space-item" style="margin-left: 50px; margin-bottom: -25px; ">
+                                    沒有<span class="tm-text-receiver">接收者 ( receiver )</span>
+                                    <span class="tm-text-receiver">T </span>
+
+                                </div>
+                                <div class="text-space-item" style="margin-left: 120px; margin-bottom: -35px;">
+                                    <span><img src="./img/turn-up.svg"></span>
+                                </div>
+
+                                <div class="text-space-item">
+                                    <span>
+                                        public inline fun &lt;R&gt;&nbsp;
+                                        run ( block:( )
+                                        -&gt;
+                                        <span class="tm-text-returntype">R</span>): <span
+                                            class="tm-text-returntype">R</span>
+                                        {
+                                    </span>
+                                </div>
+
+                                <div class="text-space-item" style="margin-left: 30px;">
+                                    <span>
+                                        return&nbsp;
+                                        block()<span class="tm-text-comment ">//回傳的是block()所回傳的R</span>
+                                    </span>
+                                </div>
+                                <div class="text-space-item">
+                                    <span>}</span>
+
+                                </div>
+
+                            </div>
+                            <div class="text-space-text">
+                                沒有接收者的 run 像是一個小的playground，但只回傳最後一個表達式。
+
+                            </div>
+                        </div>
+
+                    </section>
+                    <!-- id="section-run"-->
+                    <section id="section-use-run">
+                        <P>怎麼使用:</P>
+
+                        <div class="text-space-block">
+                            <div class="text-space-block-b" data-align="left">
+                                <div class="text-space-item">
+                                    <ul style="list-style-type: none; flex-shrink: 0;">
+                                        <li>class Actor { </li>
+                                        <li>
+                                            <ul style="list-style-type: none;">
+                                                <li>var name = "李羅" </li>
+                                                <li>var characterName = "無"</li>
+                                                <li>var level= "高級"</li>
+                                                <li>var dramaName = "無" </li>
+                                                <li>var hairStyle = "中長黑髮"</li>
+                                            </ul>
+                                        </li>
+                                        <li>}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="text-space-block-b" data-align="right">
+                                <div class="text-space-item">
+                                    <ul style="list-style-type: none;">
+                                        <li>fun Actor.nominatedGBA(): String {</li>
+                                        <li style="margin-left: 30px;">return " 獎戲劇節目男配角獎得獎的是 ${name}! "
+                                            <br> + " 在 ${dramaName} 劇中完整的詮釋了角色的魅力"
+                                        </li>
+                                        <li>}</li>
+                                        <li>fun main() { </li>
+                                        <li style="margin-left: 30px;">
+
+                                            val actor = Actor() {</li>
+                                        <li style="margin-left: 30px;">
+
+                                            val words = actor.run{ </li>
+                                        <li style="margin-left: 60px;">
+                                            dramaName = "艋舺燿輝"
+                                        </li>
+                                        <li style="margin-left: 60px;">
+                                            nominatedGBA()
+                                        </li>
+                                        <li style="margin-left: 30px;"> }</li>
+                                        <li style="margin-left: 30px;"> println(words)</li>
+
+                                        <li>}</li>
+                                        <li><span class="tm-text-comment">//輸出> 獎戲劇節目男配角獎得獎的是 李羅! 在艋舺燿輝
+                                                劇中完整的詮釋了角色的魅力 </span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </section><!-- id="section-use-run"-->
+                    <!--RUN-->
+
+                    <!--WITH-->
+                    <section id="section-with">
+                        <h3><b>with</b></h3>
+                        <P>with的原始碼:</P>
+                        <div class="text-space-block">
+                            <div class="text-space-block-blue">
+                                <div class="text-space-item"
+                                    style="margin-left: 30px; margin-bottom: -25px; font-size: 14px;">
+
+                                    <span class="tm-text-receiver">接收者 ( receiver ) T </span>作為參數使用
+                                </div>
+                                <div class="text-space-item"
+                                    style="margin-left: 220px; margin-bottom: -35px; font-size: 14px;">
+                                    <span><img src="./img/turn-up.svg"></span>
+                                </div>
+                                <div class="text-space-item">
+                                    <span>
+                                        public inline fun &lt;T, R&gt;&nbsp;
+                                        with ( <span class="tm-text-receiver">receiver: T</span>, block:
+                                        <span class="tm-text-receiver">T</span>.( )
+                                        -&gt;
+                                        <span class="tm-text-returntype">R</span>): <span
+                                            class="tm-text-returntype">R</span>
+                                        {
+                                    </span>
+                                </div>
+                                <div class="text-space-item" style="margin-left: 30px;">
+                                    <span>
+                                        return&nbsp;
+                                        <span class="tm-text-receiver">receiver</span>.block()<span
+                                            class="tm-text-comment ">//回傳的是block()所回傳的R</span>
+                                    </span>
+                                </div>
+                                <div class="text-space-item">
+                                    <span>}</span>
+
+                                </div>
+
+                            </div>
+                            <div class="text-space-text">
+                                with 跟 run 本質上是一樣的，只是換句話說。在某些時候，語意上看起來比較通順 “with this object, do the
+                                following.” (用這個接收者去做下列事項)
+
+                            </div>
+
+                        </div>
+
+                    </section>
+                    <!-- id="section-with"-->
+                    <section id="section-use-with">
+                        <P>怎麼使用:</P>
+
+                        <div class="text-space-block">
+                            < <div class="text-space-block-b" data-align="left">
+                                <div class="text-space-item">
+                                    <ul style="list-style-type: none; flex-shrink: 0;">
+                                        <li>class Actor { </li>
+                                        <li>
+                                            <ul style="list-style-type: none;">
+                                                <li>var name = "李羅" </li>
+                                                <li>var characterName = "無"</li>
+                                                <li>var level= "高級"</li>
+                                                <li>var dramaName = "無" </li>
+                                                <li>var hairStyle = "中長黑髮"</li>
+                                            </ul>
+                                        </li>
+                                        <li>}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="text-space-block-b" data-align="right">
+                                <div class="text-space-item">
+                                    <ul style="list-style-type: none;">
+                                        <li>fun Actor.nominatedGBA(): String {</li>
+                                        <li style="margin-left: 30px;">return " 獎戲劇節目男配角獎得獎的是 ${name}! "
+                                            <br> + " 在 ${dramaName} 劇中完整的詮釋了角色的魅力"
+                                        </li>
+                                        <li>}</li>
+                                        <li>fun main() { </li>
+                                        <li style="margin-left: 30px;">
+
+                                            val actor = Actor() {</li>
+                                        <li style="margin-left: 30px;">
+
+                                            val words = with(actor) { </li>
+                                        <li style="margin-left: 60px;">
+                                            dramaName = "艋舺燿輝"
+                                        </li>
+                                        <li style="margin-left: 60px;">
+                                            nominatedGBA()
+                                        </li>
+                                        <li style="margin-left: 30px;"> }</li>
+                                        <li style="margin-left: 30px;"> println(words)</li>
+
+                                        <li>}</li>
+                                        <li><span class="tm-text-comment">//輸出> 獎戲劇節目男配角獎得獎的是 李羅! 在艋舺燿輝
+                                                劇中完整的詮釋了角色的魅力 </span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </section><!-- id="section-use-with"-->
+                    <!--WITH-->
+
+                    <!--TIP 2-->
+                    <section id="section-tip2">
+                        <h3><b>小撇步:</b></h3>
+                        <P>let 跟 also 有機會可以讓程式碼更簡短，當 接收者 (receiver object) 作為 函數類型 ( function types) block
+                            的參數時，且 block 只有唯一一個參數時，可以使用 方法引用 ( method reference )。
+                            <br>舉例來說，上述的範例就可以簡化為:</P>
+                        <div class="text-space-block">
+                            <div class="text-space-block-b">
+                                <div class="text-space-item">
+                                    <ul style="list-style-type: none;">
+                                        <li>val room = actor.let { </li>
+                                        <li style="margin-left: 60px;"><span>
+                                                defineTheRestRoom(it)
+                                            </span></li>
+
+                                        <li>}</li>
+                                        <li>val room = actor.let(::defineTheRestRoom)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                    </section><!-- id="section-tip2"-->
+                    <!--TIP 2-->
+                    <!--TIP 3-->
+                    <section id="section-tip3">
+                        <h3><b>警語:</b></h3>
+                        <P>官網於最後面提到，雖然這些語法糖能讓程式看起來更簡潔，但不建議過度使用。過度使用反而會使程式碼可讀性降低，老實說連到底這些 scope function是用
+                            this 還是 it 都記不得了，怎麼能期許在鍊式呼叫的時候可以一眼就看出這段程式碼到底要幹嘛呢?</P>
+
+                    </section><!-- id="section-tip3"-->
+                    <!--TIP 3-->
+                    <div
+                        style="display: inline-flex; flex-direction: row; font-size: 40px; width: 90vw; margin:20px 0;">
+                        <hr style="width: 30%; height: 2px; border: none; background-color: #5F6A61">
+                        <i class="twicon-flying-fish"></i>
+                        <hr style="width: 5%; height: 2px; border: none; background-color: #5F6A61">
+                        <i class="twicon-flying-fish"></i>
+                        <hr style="width: 10%; height: 2px; border: none; background-color: #5F6A61">
+                        <i class="twicon-flying-fish"></i>
+                        <hr style="width: 45%; height: 2px; border: none; background-color: #5F6A61">
+                    </div>
+
+                    <!--TAKEIF-->
+                    <section id="section-takeif">
+                        <h3><b>takeIf 和 takeUnless</b></h3>
+                        <P>原始碼:</P>
+                        <div class="text-space-block">
+                            <div class="text-space-block-blue">
+                                <div class="text-space-item"
+                                    style="margin-left: 350px; margin-bottom: -25px; font-size: 14px;">
+
+                                    <span class="tm-text-returntype">返回值</span>
+                                    <span>為布林值</span>
+
+                                </div>
+                                <div class="text-space-item"
+                                    style="margin-left: 150px; margin-bottom: -35px; font-size: 14px;">
+                                    <span style="margin-left: 250px;">
+                                        <img src="./img/turn-up-r.svg">
+                                    </span>
+                                </div>
+                                <div class="text-space-item">
+                                    <span>
+                                        public inline fun &lt;T&gt;
+                                        <span class="tm-text-receiver">T</span>.takeIf ( predicate:
+                                        (&nbsp;<span class="tm-text-receiver">T</span>&nbsp;)
+                                        -&gt;
+                                        <span class="tm-text-returntype">Boolean</span>): <span
+                                            class="tm-text-hireceiver">T?</span> {
+                                    </span>
+                                </div>
+                                <div style="margin-left: 340px; margin-top: -35px; font-size: 14px;">
+                                    <span style="margin-top: 0px;"><img src="./img/turn-down.svg"></span>
+                                </div>
+                                <div style="margin-left: 190px; margin-top: -15px; font-size: 14px;">
+                                    <span>
+                                        <span class="tm-text-parameter">參數</span>
+                                        <span>是receiver object本人</span>
+                                    </span>
+                                </div>
+
+                                <div class="text-space-item " style="margin-left: 35px;"">
+                                    <span>
+                                        return if(predicate( <span class=" tm-text-hireceiver">this</span>)) <span
+                                        class="tm-text-hireceiver">this</span> else null
+                                    <span class="tm-text-comment ">//回傳自己</span>
+                                    </span>
+                                </div>
+                                <div class="text-space-item">
+                                    <span>}</span>
+
+                                </div>
+
+                            </div>
+
+                            <div class="text-space-text">
+                                takeIf 和 takeUnless 用來在鍊式呼叫 ( call chains
+                                )中，方便檢查這個物件是否符合條件。本質上這兩個功能一樣的，就是好用的ifelse，但語意上 takeUnless
+                                比較混淆視聽，因此盡量使用 takeIf 來做邏輯判斷。
+
+                            </div>
+
+                        </div>
+
+                    </section><!-- id="section-takeif"-->
+                    <section id="section-takeunless" style="margin-top: 1px;">
+
+                        <div class="text-space-block">
+                            <div class="text-space-block-blue">
+
+
+                                <div class="text-space-item">
+                                    <span>
+                                        public inline fun &lt;T&gt;
+                                        <span class="tm-text-receiver">T</span>.takeUnless ( predicate:
+                                        (&nbsp;<span class="tm-text-receiver">T</span>&nbsp;)
+                                        -&gt;
+                                        <span class="tm-text-returntype">Boolean</span>): <span
+                                            class="tm-text-hireceiver">T?</span> {
+                                    </span>
+                                </div>
+
+                                <div class="text-space-item" style="margin-left: 30px;">
+                                    <span>
+                                        return if(predicate( <span class="tm-text-hireceiver">this</span>)) <span
+                                            class="tm-text-hireceiver">this</span> else null
+                                        <span class="tm-text-comment ">//回傳自己</span>
+                                    </span>
+                                </div>
+                                <div class="text-space-item">
+                                    <span>}</span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </section><!-- id="section-takeunless"-->
+                    <section id="section-use-takeif">
+                        <P>怎麼使用:</P>
+
+                        <div class="text-space-block">
+                            <div class="text-space-block-b">
+                                <div class="text-space-item">
+                                    <ul style="list-style-type: none;">
+                                        <li>class Actor { </li>
+                                        <li style="margin-left: 60px;"><span>
+                                                var name = "李羅" <br>
+                                                var characterName = "無"<br>
+                                                var level= "高級"<br>
+                                                var dramaName = "無" <br>
+                                                var hairStyle = "中長黑髮"<br>
+                                            </span></li>
+
+                                        <li>}</li>
+                                        <li>&nbsp;</li>
+
+                                        <li>fun defineTheRestRoom(actor: Actor): String {</li>
+                                        <li style="margin-left: 30px;"> when(actor.level){ </li>
+                                        <li style="margin-left: 60px;"> "高級"-> return "VIP室" </li>
+                                        <li style="margin-left: 60px;"> "中級"-> return "接待室" </li>
+                                        <li style="margin-left: 60px;"> else-> return "地下室" </li>
+                                        <li style="margin-left: 30px;"> } </li>
+                                        <li>}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="text-space-block-b" data-align="right">
+                                <div class="text-space-item">
+                                    <ul style="list-style-type: none;">
+
+                                        <li>fun provideAirCondition(room: String): Boolean{ </li>
+                                        <li style="margin-left: 30px;"> if(room == "VIP室") return true </li>
+
+                                        <li style="margin-left: 30px;"> else return false </li>
+                                        <li>}</li>
+                                        <li>&nbsp;</li>
+                                        <li>fun main() { </li>
+                                        <li style="margin-left: 30px;">
+
+                                            val words = Actor( ).let {</li>
+                                        <li style="margin-left: 60px;">
+                                            <span> defineTheRestRoom(it)
+                                            </span>
+                                        </li>
+                                        <li style="margin-left: 30px;">
+
+                                            }.takeIf { </li>
+                                        <li style="margin-left: 60px;">
+                                            <span> provideAirCondition(it)
+                                            </span>
+                                        </li>
+                                        <li style="margin-left: 30px;">
+
+                                            }?.run{ </li>
+                                        <li style="margin-left: 60px;">
+                                            <span> "有冷氣的$this"
+                                            </span>
+                                        </li>
+                                        <li style="margin-left: 30px;"> }</li>
+                                        <li style="margin-left: 30px;"> println("帶這個演員到 $room") //帶這個演員到
+                                            有冷氣的VIP房 </li>
+
+                                        <li>}</li>
+                                        <li><span class="tm-text-comment">//輸出> 李羅 also acting the character in
+                                                親戚不計較</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </section><!-- id="section-use-takeif"-->
+                    <!--TAKEIF-->
+
+                </div>
+            </section> <!-- id="notepage"-->
+        </div>
+
+    </div>
+    <div class="nav-cat catfixed">
+        <input type="checkbox">
+        <img class="wool" src="./img/wool.svg">
+        <img class="cat" src="./img/cat.svg">
+        <div class="menu">
+            <li><a href="#">home</a></li>
+            <li><a href="#">about</a></li>
+            <li><a href="#">cursos</a></li>
+            <li><a href="#">blog</a></li>
+            <li><a href="#">contactos</a></li>
+        </div>
+    </div>
+    <div class="tm-bottom-container">
+
+        <!-- Footer -->
+        <!-- <footer>
+            || Copyright &copy; 2018
+
+            || design: <a href="https://www.51qianduan.com/">51前端</a> ||
+        </footer> -->
+    </div>
+    <script src="index.bundle.js"></script>
+    </div>
+</body>
+
+</html>
