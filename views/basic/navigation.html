@@ -1,16 +1,22 @@
-
-
-    <div class="nav-cat catfixed">
-        <input type="checkbox">
-        <img class="wool" src="../../../../img/wool.svg">
-        <img class="cat" src="../../../../img/cat.svg">
-        <div class="menu">
-            <li><a id="home" href="#">home</a></li>
-            <li><a id="about" href="#">about</a></li>
-            <li><a id="cursos" href="#">cursos</a></li>
-            <li><a id="blog" href="#">blog</a></li>
-            <li><a id="contactos" href="#">contactos</a></li>
-        </div>
+<div class="nav-cat catfixed">
+    <input type="checkbox">
+    <img class="wool" src="../../../../img/wool.svg">
+    <img class="cat" src="../../../../img/cat.svg">
+    <div class="menu">
+        <li><a id="home" href="#">home</a></li>
+        <li><a id="about" href="#">about</a></li>
+        <li><a id="cursos" href="#">cursos</a></li>
+        <li><a id="blog" href="#">blog</a></li>
+        <li><a id="contactos" href="#">contactos</a></li>
     </div>
-
-
+</div>
+<script>
+    addActive();
+    function addActive() {
+        if ($('.nav-cat-menu').attr("data-tag")) {
+            let activatetag = $('.nav-cat-menu').attr("data-tag");
+            console.log(activatetag);
+            $('#' + activatetag).toggleClass('active');
+        }
+    }
+</script>
