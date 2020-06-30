@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Being Through</title>
+</head>
+
+<body class="note-body">
+
+    <div id="loading"></div>
+
+    <div class="tm-main-container">
+
+        <div class="tm-top-container" data-tag="blog-code">
+
+        </div>
+
+        <!-- Site content -->
+        <div class="tm-content">
+            <!-- Section 1 About Me -->
+            <section id="notepage" class="tm-section tm-section-1" data-type="0">
+
+                <div class="tm-textbox" data-color="white8">
+                    <section id="section-head">
+                        <h2>Ch.10-11 List、 Set、 Map </h2>
+                        <p>
+                            集合 ( Collections )是用來存放一組元素 ( Elements | items)的物件。Kotlin標準庫 Collections package
+                            中提供了一些集合的介面： List、Set、Map、Iterable、Collection，他們之間的關係可以參考下圖，其中 List、Set 繼承了 Collection 及
+                            Iterable，也就是說 List、Set 是一種 Collection。
+                            而 Map 乍看之下跟 Collection 一點關係都沒有，但其實默默地設有兩個相關屬性：<br>
+                            <span class="tm-text-higrey">val keys: <span
+                                    class="tm-text-white-3">Set&lt;K&gt;</span></span><br>
+                            <span class="tm-text-higrey">val values: <span
+                                    class="tm-text-white-3">Collection&lt;V&gt;</span></span>
+                        </p>
+
+                        <img class="tm-img" src="../../../../img/collections.PNG">
+                    </section><!-- id="section-head"-->
+
+                    <section id="section-pre">
+                        <h3><b>未卜先知:</b></h3>
+                        <P>在開始之前先認識一些名詞:</P>
+                        <div class="list8">
+                            <ul>
+                                <li>擴展函式( Extension Function ) : 於本書中第18章才會提到，簡而言之就是可以幫類別添加一些自訂的方法。</li>
+                                <li>泛型 ( Generic ) : 於本書中第17章才會提到，在強型別語言中，設計類別或方法時先不指定傳入的參數是甚麼型別，等要用的時候再去定義。
+                                    <span class="tm-text-hiwhite-3">algorithms are written in terms of Types
+                                        to-be-specified-later</span> <sub class="tm-text-literal">from Wikipedia </sub>
+                                    <br>簡單來說就是先用<span class="tm-text-hipink">代數</span>佔個位，之後再來決定要用哪個類型去處理，而這個<span
+                                        class="tm-text-hipink">代數</span>我們稱之為<span class="tm-text-hipink">參數化型別 (
+                                        parameterized type )</span>，通常用角括號將這個類型標註起來。
+                                    看起來像這樣: List<span
+                                        class="tm-text-parameter">&lt;T&gt;</span>，其中T是約定成俗的符號，代表Type，另外還有E (Element)、K
+                                    (Key)、V (Value)等。
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                    <!-- id="section-pre"-->
+                    <section id="section-collections">
+                        <h3>集合 (Collections)</h3>
+                        <ul>
+                            <li>Collections 有兩種型態:
+                                <ol>
+                                    <li>只讀( read-only ) : 只提供取得元素的方法  </li>
+                                    <li>可變( mutable ) :  繼承了只讀( read-only )的Collection， 並提供了新增、修改、刪除元素的方法</li>
+                                </ol>
+                            </li>
+
+                            <li>Collections 被設計為泛型型態，在使用的時候才指定內容物是甚麼型別，因此宣告時需要指定<span class="tm-text-hipink">參數化型別 (
+                                    parameterized type )</span>來限制元素的型別。</li>
+                            <li>常用來創建集合的方法有 listOf&lt;T&gt;( )、 setOf&lt;T&gt;( )、mutableListOf&lt;T&gt;( )、 mutableSetOf&lt;T&gt;( )。
+                                                <br>Map 同樣可利用 mapOf&lt;K,V&gt;( )、mutableMapOf&lt;K,V&gt;( ) 來創建。
+                                                        <br>因為 Kotlin 有型別推斷，若有初始值則可以省略變數的型別，且若非為空值連參數化型別都可以省略
+                                                        <br><span class="tm-text-higrey tm-text-white-3">val someStrings
+                                                            = listOf&lt;String&gt;</span>
+                                                        <br><span class="tm-text-higrey tm-text-white-3">val someStrings
+                                                            = listOf("字串","字串","字串","字串") </span>
+                                                        <br><span class="tm-text-higrey tm-text-white-3">val someStrings
+                                                            = mapOf&lt;Int, String&gt;</span>
+                                                        <br><span class="tm-text-higrey tm-text-white-3">val someStrings
+                                                            = mapOf(1 to "字串", 2 to "字串",  3 to "字串")</span> 
+                            </li>
+                            <li class="txt-small" style="list-style: none;"> <span class="tm-text-red ">
+                                    to 這個方法會創造一些生命周期短的 Pair( ), 如果要避免過多的內存使用，可以用其他方法。
+                                    <br>例如創建 MutableMap 並利用 apply( this[key]= value ) 寫入。
+                                </span>
+                            </li>
+                            <li> List<span class="tm-text-hipink">&lt;Int?&gt;</span> 與 List<span
+                                    class="tm-text-hipink">&lt;Int&gt;?</span> 的差異，前面的 list 不是 null，但每個 value 可以是
+                                null，後面的 list 本身可以是 null，但 value 都不能是 null</li>
+
+                        </ul>
+                    </section>
+                    <!-- id="section-collections"-->
+                    <section id="section-list">
+                        <h3>List&lt;T&gt;</h3>
+
+                        <div class="tm-code-block-b">
+                            <div class="tm-code-line">
+
+                                <span>val sophieSwitchThePort = listOf("綠色","紅色","藍色","黑色","綠色","藍色")</span>
+
+                            </div>
+                        </div>
+
+                        <ul>
+                            <li>可以重複的</li>
+                            <li>有順序的，這邊的順序是指存取的順序，排隊拿著號碼牌，叫號的時候可以依序取出</li>
+                            <li>若兩個 List&lt;T&gt; 擁有同樣的長度及內容物，且順序相同，則兩個 List 相等</li>
+                            <li>只能取出，不可新增、修改、刪除元素</li>
+                            <li>利用索引( index )存取元素: 使用索引值可以取出 List 裡的物件，索引值從0開始，一直到總數量減一 ( list.size - 1 )</li>
+                            <li>索引邊界：當使用者不小心索取大於或小於索引值的時候會拋出異常 Java.lang.ArrayIndexOutOfBoundsException</li>
+                            <li>安全索引取值
+                                <ul>
+                                    <li>為了解決索引值異常的情況，Kotlin推出了好用的函式來操作List&lt;T&gt;</li>
+                                    <li>getOrElse(index: Int, defaultValue: (Int) -> T) 可以提供預設值，若索引值超過邊界就回傳預設的方法回傳值</li>
+                                    <li>getOrNull(index: Int) 若索引值超過邊界就回傳null，需接著處理null情況</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </section>
+                    <section id="section-mutablelist">
+                        <h3>MutableList&lt;T&gt;</h3>
+                        <ul>
+                            <li>可變列表，可以新增、修改、刪除元素</li>
+                            <li>若實作 MutableList 預設為 ArrayList</li>
+                        </ul>
+                    </section>
+                    <!-- id="section-list"-->
+                    <section id="section-set">
+                        <h3>Set&lt;T&gt;</h3>
+
+                        <div class="tm-code-block-b">
+                            <div class="tm-code-line">
+
+                                <span>val totalPorts = setOf("綠色","紅色","藍色","黑色")</span>
+
+                            </div>
+                        </div>
+
+                        <ul>
+                            <li>不能重複的，即使是 null 元素也只能有一個</li>
+                            <li>順序不重要，不一定是有序的</li>
+                            <li>若兩個 Set&lt;T&gt; 擁有同樣的長度及內容物，且順序不同，則兩個 Set 相等</li>
+                            <li>只能取出，不可新增、修改、刪除元素</li>
+                            <li>不能基於索引( index ) 取值，取而代之的是 elementAt()。相較於 List 用 index 取值，使用 elementAt()
+                                其實是一個一個地去找你要的給你，所以存取速度比較慢。另外 elementAt( ) 用在 HashSet 這種無序的集合，取出來的值，不一定是你想要的。
+                            </li>
+                        </ul>
+                    </section>
+                    <section id="section-mutableSet">
+                        <h3>MutableSet&lt;T&gt;</h3>
+                        <ul>
+                            <li>可變列表，可以新增、修改、刪除元素</li>
+                            <li>若實作 MutableSet 預設為 LinkedHashSet 保留了有序性</li>
+                        </ul>
+                    </section>
+                    <!-- id="section-set"-->
+
+                    <section id="section-tip">
+                        <h3>小撇步</h3>
+                        <ul>
+                            <li>可以先用 toSet( ) 去除重複，再 toList( ) 轉回 List 以便提升搜尋速度</li>
+                            <li>distinct() 這個擴展函式內部就是將 list 先轉成 mutableSet 再轉回 list</li>
+                        </ul>
+                        <div class="tm-code-block-b">
+                            <div class="tm-code-line">
+
+                                <span>val portsList = sophieSwitchThePort.distinct()</span>
+
+                            </div>
+                        </div>
+                    </section>
+                    <!-- id="section-tip"-->
+                    <section id="section-map">
+                        <h3>Map&lt;K, V&gt;</h3>
+
+                        <div class="tm-code-block-b">
+                            <div class="tm-code-line">
+                                <ul>
+                                    <li>val HowlsMovingCastle = mapOf&lt;String, String&gt;( </li>
+                                    <ul>
+                                        <li> "綠色" to "移動城堡本體所在的地點", </li>
+                                        <li> "紅色" to "國王城鎮", </li>
+                                        <li> "藍色" to "港口小鎮", </li>
+                                        <li> "黑色" to "只有霍爾知道")</li>
+                                    </ul>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <ul>
+                            <li>key 的型態是 Set&lt;T&gt;，不可重複</li>
+                            <li>value 的型態是 List&lt;T&gt; ，可以重複</li>
+                            <li>key 需是同一類型 value 也必須是同一類型，但 key 與 value 不需要是同一類型</li>
+                            <li>存取元素是基於 key</li>
+                            <li>若兩個 Map&lt;K, V&gt; 擁有同樣的長度及內容物，即使順序不同，兩個 Map依然相等
+                            </li>
+                        </ul>
+                    </section>
+                    <section id="section-mutableMap">
+                        <h3>MutableMap&lt;K, V&gt;</h3>
+                        <ul>
+                            <li>可變列表，可以新增、修改、刪除元素</li>
+                            <li>若實作 MutableMap 預設為 LinkedHashMap 保留了有序性</li>
+                        </ul>
+                    </section>
+                    <!-- id="section-map"-->
+
+                    <section id="section-traverse">
+                        <h3>歷遍 ( Traverse ) </h3>
+                        <p>一個接著一個的操作集合 ( Collections )裡面的元素就稱之為歷遍 ( Traverse )，這邊介紹幾種方法</p>
+                        <section id="sectoin-iterator">
+                            <h4>iterator( )</h4>
+                            <span>Set 及 List 繼承至 Iterable，iterator( ) 會回傳一個 Iterator 物件，並指向第一個元素，此物件可以調用next( ) 及
+                                hasNext( )方法。</span>
+                            <div class="tm-code-block-b">
+                                <div class="tm-code-line">
+                                    <ul>
+                                        <li>val sophieSwitchIterator = sophieSwitchThePort.iterator()</li>
+                                        <li>println("蘇菲好奇地轉了轉盤，窗外的景色開始變化")</li>
+                                        <li>while (sophieSwitchIterator.hasNext()){</li>
+                                        <ul>
+                                            <li> println(HowlsMovingCastle[sophieSwitchIterator.next()]) </li>
+                                        </ul>
+                                        <li>}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </section>
+                        <section id="sectoin-listiterator">
+                            <h4>listIterator( )</h4>
+                            <span>上述的Iterator只能往下一個元素前進，但list 有一特殊的 ListIterator方法，可以指向前一個元素，並可以得知上一個元素的索引( Index
+                                )。</span>
+                            <div class="tm-code-block-b">
+                                <div class="tm-code-line">
+                                    <ul>
+                                        <li> val sophieSwitchIterator = sophieSwitchThePort.listIterator()</li>
+                                        <li>println("蘇菲好奇地轉了轉盤，窗外的景色開始變化")</li>
+                                        <li>while (sophieSwitchIterator.hasNext()){</li>
+                                        <ul>
+                                            <li> print(HowlsMovingCastle[sophieSwitchIterator.next()]+" ") </li>
+                                        </ul>
+                                        <li>}</li>
+                                        <li>println("\n馬魯克看到立即慌張地阻止，轉盤又被轉了回去")</li>
+                                        <li>while (sophieSwitchIterator.hasPrevious()){</li>
+                                        <ul>
+                                            <li> print(HowlsMovingCastle[sophieSwitchIterator.previous()]+" ") </li>
+                                        </ul>
+                                        <li>}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </section>
+                        <section id="sectoin-for">
+                            <h4>for( )</h4>
+                            <span>for 迴圈可以利用物件自帶的 iterator( ) 去操作集合 ( Collections )，也可以像 Java 自行設置並控制 index</span>
+                            <div class="tm-code-block-b">
+                                <div class="tm-code-line">
+                                    <ul>
+                                        <li>println("霍爾想知道蘇菲轉過了哪些地方")</li>
+                                        <li>for(port in sophieSwitchThePort){</li>
+                                        <ul>
+                                            <li> print(HowlsMovingCastle[port]+" ") </li>
+                                        </ul>
+                                        <li>}</li>
+                                        <li>println("霍爾想知道蘇菲在偶數次的時候轉到了哪裡") </li>
+                                        <li>var index = sophieSwitchThePort.size - 1 </li>
+                                        <li>for (i in 1..index step 2){ </li>
+                                        <ul>
+                                            <li>val key = sophieSwitchThePort[i] </li>
+                                            <li>print(HowlsMovingCastle[key]+" ")</li>
+                                        </ul>
+                                        <li>}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </section>
+                        <section id="sectoin-for">
+                            <h4>forEach( ) 、 forEachIndexd( )</h4>
+                            <span>若是要歷遍 ( Traverse ) 集合 ( Collections )中每一個元素，那直接使用 forEach( ) 是最簡潔的。 forEach( ) 內部其實就是
+                                for 迴圈的實現。若同時需要操作 index，則可以使用 forEachIndexd( )</span>
+                            <div class="tm-code-block-b">
+                                <div class="tm-code-line">
+                                    <ul>
+                                        <li>println("霍爾想知道蘇菲轉過了哪些地方")</li>
+                                        <li>sophieSwitchThePort.forEach {</li>
+                                        <ul>
+                                            <li> print(HowlsMovingCastle[it]+" ") </li>
+                                        </ul>
+                                        <li>}</li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="tm-code-block-b">
+                                <div class="tm-code-line">
+                                    <ul>
+                                        <li>sophieSwitchThePort.forEachIndexed {index, value -> </li>
+                                        <ul>
+                                            <li> if(value == "黑色") </li>
+                                            <li>print("蘇菲在第 $index 次的時候不小心看到了" + HowlsMovingCastle[value]) </li>
+                                        </ul>
+                                        <li>}</li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </section>
+                        <section id="sectoin-while">
+                            <h4>while( )</h4>
+                            <span>當需要更自由的設定停止條件時，可以使用 while() 來控制</span>
+                            <div class="tm-code-block-b">
+                                <div class="tm-code-line">
+                                    <ul>
+                                        <li>println("霍爾下令，只要蘇菲轉到黑色，從此就不得再接近那門") </li>
+                                        <li>var index = 0 </li>
+                                        <li>while (sophieSwitchThePort[index] != "黑色"){</li>
+                                        <ul>
+                                            <li> val key = sophieSwitchThePort[index] </li>
+                                            <li>print(HowlsMovingCastle[key]+" ")</li>
+                                            <li>index++ </li>
+                                        </ul>
+                                        <li>}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </section>
+                        <section id="sectoin-break">
+                            <h4>break</h4>
+                            <span>當需要更自由的設定停止條件時，可以使用 while() 來控制</span>
+                            <div class="tm-code-block-b">
+                                <div class="tm-code-line">
+                                    <ul>
+                                        <li>println("霍爾下令，只要蘇菲轉到黑色，從此就不得再接近那門") </li>
+                                        <li>var index = 0 </li>
+                                        <li>while (index < sophieSwitchThePort.size){</li>
+                                                <ul>
+                                                    <li>if(sophieSwitchThePort[index] == "黑色" ) break; </li>
+                                                    <li>val key = sophieSwitchThePort[index] </li>
+                                                    <li>print(HowlsMovingCastle[key]+" ")</li>
+                                                    <li>index++ </li>
+                                                </ul>
+                                        <li>}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </section>
+                    </section>
+                    <!-- id="section-traverse"-->
+
+                    <section id="section-additional">
+                        <h3>補充</h3>
+                        <section id="sectoin-filter">
+                            <h4>filter( )</h4>
+                            <span>接收條件判斷式，將元素帶入判斷式中，若為 true 就將原集合 ( Collections )的元素加到新創的集合中。</span><br>
+                            <span>List 與 Set 使用 filter() 會回傳一個新的 ArrayList， Map 使用 filter() 則回傳一個新的 Map。</span>
+                            <div class="tm-code-block-b">
+                                <div class="tm-code-line">
+                                    <ul>
+                                        <li>println("廣告信就直接扔了吧，國王寄的我必須要收到。霍爾說") </li>
+                                        <li>val mailBox = mapOf( </li>
+                                        <ul>
+                                            <li>"邀請函" to "國王", </li>
+                                            <li> "戰帖" to "荒野女巫", </li>
+                                            <li> "廣告信" to "未具名", </li>
+                                            <li> "包裹" to "國王") </li>
+                                        </ul>
+                                        <li>val howlShouldRead = mailBox.filter {(key, value) -> </li>
+                                        <ul>
+                                            <li> key != "廣告信" || value == "國王" </li>
+                                        </ul>
+                                        <li>}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="sectoin-mapfunciton">
+                            <h4>map( )</h4>
+                            <span>接收轉換式，將元素帶入轉換式中，並將結果丟入新的集合中。</span><br>
+                            <span>任何集合經過 map() 轉換後都會得到一個新的 Arraylist。若想要將 Map 轉換後得到 Map，則可以使用 mapKeys( )、mapValues(
+                                )</span>
+                            <div class="tm-code-block-b">
+                                <div class="tm-code-line">
+                                    <ul>
+                                        <li>val newCastle = HowlsMovingCastle.mapKeys { </li>
+                                        <ul>
+                                            <li>when (it.key){ </li>
+                                            <li>
+                                                <ul>
+                                                    <li>"紅色" -> "桃紅色"</li>
+                                                    <li>"藍色" -> "鵝黃色" </li>
+                                                    <li>else -> it.key </li>
+                                                </ul>
+                                            </li>
+                                            <li> }</li>
+                                        </ul>
+                                        <li>}</li>
+                                        <li>val changeDestination = newCastle.mapValues { </li>
+                                        <ul>
+                                            <li>when (it.key){ </li>
+                                            <li>
+                                                <ul>
+                                                    <li>"桃紅色" -> "濕地高原" </li>
+                                                    <li>"鵝黃色" -> "帽子店" </li>
+                                                    <li>"黑色" -> "霍爾故鄉" </li>
+                                                    <li>else -> it.value</li>
+                                                </ul>
+                                            </li>
+                                            <li> }</li>
+                                        </ul>
+                                        <li>}</li>
+                                        <li>println(changeDestination)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="sectoin-associate">
+                            <h4>associate ( )、 associateWith( )、associateBy( )</h4>
+                            <span>根據 List 或 Set 的元素去轉換後，放入新的 Map 中</span>
+                            <ul>
+                                <li>associate( ) 將原本的集合轉換為 Pair( ) 放入新的 Map 中</li>
+                                <li>associateWith( )將原本的元素視為其 Key 值；</li>
+                                <li>相反的，associateBy() 則是將轉換後的值視為 Key值</li>
+                            </ul>
+                            <div class="tm-code-block-b">
+                                <div class="tm-code-line">
+                                    <ul>
+                                        <li>val characters = listOf("蘇菲 倍賞千惠子", "霍爾 木村拓哉", "荒野女巫 美輪明宏", "馬魯克 神木隆之介")
+                                        </li>
+                                        <li>val result = characters.associate { </li>
+                                        <li>
+                                            <ul>
+                                                <li> it.split(" ").let { (character, voice) -> </li>
+                                                <ul>
+                                                    <li>character to voice </li>
+                                                </ul>
+                                                <li> }</li>
+                                            </ul>
+                                        </li>
+                                        <li>}</li>
+                                        <li> println(result)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </section>
+                        <section id="sectoin-zip">
+                            <h4>zip( )</h4>
+                            <span>將兩個 List 或 Set 根據索引位置以一對一的方式配對，以最少的集合數量為主，超過的部分就丟棄，回傳含有 Pair() 的 List。</span>
+                            <div class="tm-code-block-b">
+                                <div class="tm-code-line">
+                                    <ul>
+                                        <li>val characters = listOf("蘇菲", "霍爾", "荒野女巫", "馬魯克")</li>
+                                        <li>val voice = listOf("倍賞千惠子", "木村拓哉", "美輪明宏", "神木隆之介") </li>
+                                        <li>val result = characters.zip(voice)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </section>
+
+                    </section>
+                    <!-- id="section-additional"-->
+
+
+                </div>
+            </section> <!-- id="notepage"-->
+        </div>
+
+    </div>
+
+    <div class="nav-cat-menu" data-tag="blog"></div>
+
+    <div class="tm-bottom-container">
+        <!-- TO BE CONTINEUE-->
+    </div>
+    <script src="../../../../index.bundle.js"></script>
+</body>
+
+</html>

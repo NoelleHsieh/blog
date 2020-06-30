@@ -13,8 +13,8 @@
     <div id="loading"></div>
 
     <div class="tm-main-container">
+
         <div class="tm-top-container"  data-tag="blog-code">
-            
 
         </div>
 
@@ -147,60 +147,19 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- <div class="text-break" data-type="padM">
-                                            <div class="text-space-item">
-                                                <span class="">val sayHello</span>:
-                                                <span class="tm-text-higrey">(&nbsp;
-                                                    <span class="tm-text-parameter">String&nbsp;</span>
-                                                    ) -&gt;
-                                                    <span class="tm-text-returntype">Unit</span>
-                                                </span>
-                                                <sup class="tm-text-literal"
-                                                    style="margin-left: 130px; margin-top: 25px;">Lambda 表達式</sup>
-                                            </div>
-                                            <div class="text-space-item" style="margin-left: 30px;">
-                                                =
-                                                <span class="tm-text-hiwhite-3 tm-text-uliteral">fun (
-                                                    <span class="tm-text-parameter"> name: String
-                                                    </span>):
-                                                    <span class="tm-text-returntype">Unit&nbsp;
-                                                    </span>{ println( "Hello $name" ); }
-                                                </span>
-
-                                            </div>
-                                            <div class="text-space-item">
-                                                <span class="">val sayHello</span>:
-                                                <span class="tm-text-higrey">(&nbsp;
-                                                    <span class="tm-text-parameter">String&nbsp;</span>
-                                                    ) -&gt;
-                                                    <span class="tm-text-returntype">Unit</span>
-                                                </span>
-                                                <sup class="tm-text-literal"
-                                                    style="margin-left: 50px; margin-top: 25px;">匿名函式</sup>
-                                            </div>
-                                            <div class="text-space-item" style="margin-left: 30px;">
-                                                =
-                                                <span class="tm-text-hiwhite-3 tm-text-uliteral">{
-                                                    <span class="tm-text-hipink">it</span> -&gt;
-                                                    println( "Hello
-                                                    <span class="tm-text-hipink">$it</span>" ) }
-                                                </span>
-
-                                            </div>
-                                        </div> -->
                                         <ul>
                                             <li><span class="tm-text-hiwhite-3">function literal</span>:
-                                                用來定義function的語法，可以是Lambda表達式 ( Lambda
+                                                將 function types 實例化可以得到一種不特別設置名稱的表達式，可以是Lambda表達式 ( Lambda
                                                 Expression ) 或是 匿名函式 ( Anonymous Function
                                                 )。例如上面的程式碼中，等式後面的表述式就稱之為 function literal</li>
                                             <li>
-                                                receiver type : <span class="tm-text-higrey"> <span
-                                                        class="tm-text-receiver"> T</span>.(
-                                                    <span class="tm-text-parameter">A</span> ) -&gt;&nbsp; <span
-                                                        class="tm-text-returntype">C</span></span>
-                                                其中<span class="tm-text-receiver"> T </span>為 receiver object。
+                                                function type with receiver : <span class="tm-text-higrey"> <span class="tm-text-receiver"> T</span>.(
+                                                    <span class="tm-text-parameter">A</span> ) -&gt;&nbsp; <span class="tm-text-returntype">C</span></span>
+                                                當 function type 前面接了 receiver object<span class="tm-text-receiver"> T </span>時，我們稱之為 function type with receiver。
                                                 <br>
-                                                receiver 在 function body { &nbsp;}
+                                            </li>
+                                            <li>function literals with receiver :  function type with receiver 被實例化的時候即稱為 function literals with receiver，
+                                                <br>receiver 在 function body { &nbsp;}
                                                 中可以用 <span class="tm-text-hireceiver">this</span>
                                                 來代替，這樣我們可以呼叫這個類別的方法，或其他成員。
                                                 <br>
@@ -1293,18 +1252,13 @@
         </div>
 
     </div>
+    
     <div class="nav-cat-menu" data-tag="blog"></div>
+
     <div class="tm-bottom-container">
-
-        <!-- Footer -->
-        <!-- <footer>
-            || Copyright &copy; 2018
-
-            || design: <a href="https://www.51qianduan.com/">51前端</a> ||
-        </footer> -->
+        <!-- TO BE CONTINEUE-->
     </div>
     <script src="../../../../index.bundle.js"></script>
-    </div>
 </body>
 
 </html>

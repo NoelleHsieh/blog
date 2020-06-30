@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Being Through</title>
+</head>
+
+<body class="note-body">
+
+    <div id="loading"></div>
+
+    <div class="tm-main-container">
+
+        <div class="tm-top-container" data-tag="blog-code">
+
+        </div>
+
+        <!-- Site content -->
+        <div class="tm-content">
+            <!-- Section 1 About Me -->
+            <section id="notepage" class="tm-section tm-section-1" data-type="0">
+
+                <div class="tm-textbox" data-color="white8">
+                    <section id="section-head">
+                        <h2>Ch.18 擴展
+                            <div class="text-break" data-type="mobile-min"><br></div>
+
+                            <span class="tm-text-grey-d">Ch.18 Extensions</span></h2>
+                        <p>Kotlin 提供一種可以替類別新增函式或屬性的管道-擴展 (Extensions)。當串接一個無法擅自更改的第三方類別，又希望能客製化一些函式或屬性時，Extensions
+                            就顯得特別有用。
+                            事實上，kotlin-stdlib 中經常用到 Extensions，如同先前提到的第九章所有的函式都屬於擴展函式 (Extension function)。
+                            宣告的方式很簡單，如同以往的寫出想要的函式，然後在函式的名稱前加上
+                            <span class="tm-text-hireceiver"><span class="tm-text-hireceiver">想要擴展的類別.</span></span>
+
+                        </p>
+                        舉個例子，比如說豬太郎每次說話的時候尾句都會加上"噗"，把這個功能實現的時候應該是這樣
+                        <div class="tm-code-block-b">
+                            <div class="tm-code-line">
+                                <ul>
+                                    <li>fun addPetPhrase(str: String): String{</li>
+                                    <Ul>
+                                        <li> return str + " 噗</li>
+                                    </Ul>
+                                    <li>}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        但我想要讓這個函式屬於 String 類別，於是我使出了 Kotlin Extensions
+                        <div class="tm-code-block-b">
+                            <div class="tm-code-line">
+                                <ul>
+                                    <li><sub class="tm-text-comment">此時這個<span
+                                                class="tm-text-hireceiver">String</span>稱為接收者類型 (receiver type)</sub>
+                                    </li>
+                                    <li>fun <span class="tm-text-receiver">String</span>.addPetPhrase(): String{</li>
+                                    <Ul>
+                                        <li> return this + " 噗</li>
+                                    </Ul>
+                                    <li>}</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        欸欸欸，等等，這是不是似曾相識? 是不是跟第九章的 Scope functions 長得有點像? 沒有錯，之前介紹的 apply、also、with...都是 extension
+                        functions
+                        <br>這邊的 Receiver 是被接在具名函式，之前介紹的是接在 lambda 或 匿名函式上
+                        <table>
+                            <tr>
+                                <td>
+                                    <div class="tm-code-block-b">
+                                        <div class="tm-code-line">
+                                            <ul>
+                                                <li>fun <span class="tm-text-receiver">String</span>.addPetPhrase():
+                                                    String {
+                                                </li>
+                                                <Ul>
+                                                    <li> return (this + " 噗")</li>
+                                                </Ul>
+                                                <li>}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="tm-code-block-b">
+                                        <div class="tm-code-line">
+                                            <ul>
+                                                <li> val addPetPhrase : <span
+                                                        class="tm-text-receiver">String</span>.()-> String =
+                                                    {</li>
+                                                <Ul>
+                                                    <li> this + " 噗"</li>
+                                                </Ul>
+                                                <li>}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <p>上面那兩句是等效的，只是使用時機上的差別，具名函式做為 extension function 使用；而 function literals with receiver
+                            常作為參數或返回值使用。
+                            為擴展函數命名時，需要格外注意是否有名稱已被使用過。同樣的情況如果在 String 這個類別裡面已經有同個名稱且引用同樣的參數的函式，會優先使用既存的函式。
+                            但如果是在同一個文件裡跟 Kotlin-stdlib 裡的擴展函式撞名的話，會優先使用我們自己定義的函式。</p>
+                    </section><!-- id="section-head"-->
+
+                    <section id="section-extension-magic">
+                        <h3>Kotlin 神奇的魔法</h3>
+                        打開 IDE 把 Java 反編譯檔拿來審視了一番，其實 Kotlin 並不能真的修改類別把東西加進去，只是定義了一個跟這個類別有點關係的靜態函式讓他看起來屬於這個類別。
+                        <div class="tm-code-block-blue">
+                            <div class="tm-code-line">
+                                <ul>
+                                    <li> public static final void addPetPhrase(@NotNull String $this$addPetPhrase) {
+                                    </li>
+                                    <Ul>
+                                        <li>Intrinsics.checkParameterIsNotNull($this$addPetPhrase,
+                                            "$this$addPetPhrase");</li>
+                                        <li>String var1 = $this$addPetPhrase+  " 噗";</li>
+                                        <li>boolean var2 = false;</li>
+                                        <li>System.out.println(var1);</li>
+                                    </Ul>
+                                    <li>}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        因此下面兩個函式如果同時出現，則會出現 same JVM signature error。
+                        <img class="tm-img" src="../../../../img/JVMsignature.png">
+                    </section><!-- id="section-extension-magic"-->
+
+                    <section id="section-Receiver-type">
+                        <h3>Receiver type 特典</h3>
+                        <ul>
+                            <li>Receiver type 可為空，這樣可以在 function body 中直接解決可能為空的情形。</li>
+                            <li>Receiver type 可以結合繼承來使用。</li>
+                            <ul>
+                                <li>為了擴大適用範圍，我們在 Any 類別添加擴展函式，這樣這個函式就可以適用在任何類別上。</li>
+
+                                <div class="tm-code-block-b">
+                                    <div class="tm-code-line">
+                                        <ul>
+                                            <li>fun Any.easyPrint() = println(this)</li>
+                                            <li>fun main (){</li>
+                                            <Ul>
+                                                <li> "濱崎，放學後可以到你家玩嗎?".addPetPhrase().easyPrint() </li>
+                                                <li><span class="tm-text-comment">//濱崎，放學後可以到你家玩嗎? 噗</span></li>
+                                            </Ul>
+                                            <li>}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                            </ul>
+                            <li>
+                                <p>
+                                    可以使用泛型來擴展函式，就像第九章那些 scope function Receiver type
+                                    都是泛型。泛型的好處就是在使用的時候才需要決定類別，在宣告函式的時候不特別決定他屬於哪一類的 extension function，等用到再說。
+                                    <br>將上例的 easyPrint 改寫成泛型的 extension function，不再被型別綁手綁腳，返回的 receiver type 可以鏈式操作。
+                                </p>
+                                <ul>
+                                    <div class="tm-code-block-b">
+                                        <div class="tm-code-line">
+                                            <ul>
+                                                <li>fun &lt;T&gt; T.easyPrint(): T {</li>
+                                                <ul>
+                                                    <li>println( this)</li>
+                                                    <li>return this</li>
+                                                </ul>
+                                                <li>}</li>
+                                                <li>fun main (){</li>
+                                                <Ul>
+                                                    <li> "濱崎，放學後可以到你家玩嗎?".easyPrint().addPetPhrase().easyPrint() </li>
+                                                    <li><span class="tm-text-comment">//濱崎，放學後可以到你家玩嗎?</span></li>
+                                                    <li><span class="tm-text-comment">//濱崎，放學後可以到你家玩嗎? 噗</span></li>
+                                                </Ul>
+                                                <li>}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    </section> <!-- id="section-Receiver-type"-->
+
+                    <section id="section-subtype-extension">
+                        <h3>繼承關係下的 Extension function</h3>
+                        <p>需要注意的是， 變數在尋找 Extension function 時是根據變數宣告的類別來去找相關函式，而不管實際上他的實作是甚麼型別，甚麼意思呢? 看到下面的例子，在宣告的時候
+                            student1 明示他就是豬太郎，而 student2 只有說他是3年4班的學生。我們在兩個類別分別加了同名的  Extension function ，看看他們是否輸出一樣的句子。
+                        </p>
+
+                        <div class="tm-code-block-b">
+                            <div class="tm-code-line">
+
+                                <ul>
+                                    <li>open class StudentIn304 {</li>
+                                    <ul>
+                                        <li>open fun whoAmI(): String = "我是三年四班的學生"</li>
+                                    </ul>
+                                    <li>}</li>
+                                    <li></li>
+
+                                    <li></li>
+                                    <li>class Butarou : StudentIn304() {</li>
+                                    <ul>
+                                        <li>override fun whoAmI(): String = "我是豬太郎"</li>
+                                        <li>fun String.addPetPhrase() = this + " 噗"</li>
+                                    </ul>
+                                    <li>}</li>
+                                    <li></li>
+
+                                    <li>fun <span class="tm-text-higrey">StudentIn304.sayHi</span>() {</li>
+                                    <ul>
+                                        <li>println("${this.whoAmI()}, 今天我是值日生")</li>
+                                    </ul>
+                                    <li>}</li>
+                                    <li></li>
+
+                                    <li>fun Butarou.sayHi() {</li>
+                                    <ul>
+                                        <li>println("${this.whoAmI()}, 今天我是值日生".addPetPhrase())</li>
+                                    </ul>
+                                    <li>}</li>
+                                    <li>fun main() {</li>
+                                    <Ul>
+                                        <li>val student1: Butarou = Butarou()</li>
+                                        <li>val student2: StudentIn304 = Butarou()</li>
+                                        <li>student1.sayHi()<span class="tm-text-comment">//我是豬太郎, 今天我是值日生 噗</span>
+                                        </li>
+                                        <li><span class="tm-text-higrey">student2.sayHi()</span><span
+                                                class="tm-text-comment">//我是豬太郎, 今天我是值日生</span></li>
+                                    </Ul>
+                                    <li>}</li>
+                                    <li><span class="tm-text-parameter">可以看到 student2 是去找 StudentIn304 的 extension
+                                            funciton</span></li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </section><!-- id="section-subtype-extension"-->
+
+                    <section id="section-extension-subtype">
+                        <h3>Extension function 是可以被繼承的</h3>
+                        <p>上述的例子，感覺起來太零散，現在我們把 sayHi() 加到一個 Classes 這個類別中，並加上 open 關鍵字讓他可以被繼承。
+                        </p>
+
+                        <div class="tm-code-block-b">
+                            <div class="tm-code-line">
+
+                                <ul>
+                                    <li>open class StudentIn304 {</li>
+                                    <ul>
+                                        <li>open fun <span class="tm-text-hiwhite-3">whoAmI()</span>: String =
+                                            "我是三年四班的學生"
+                                        </li>
+                                    </ul>
+                                    <li>}</li>
+                                    <li></li>
+
+                                    <li></li>
+                                    <li>class Butarou : StudentIn304() {</li>
+                                    <ul>
+                                        <li>override fun <span class="tm-text-hipurple">whoAmI()</span>: String =
+                                            "我是豬太郎"</li>
+                                        <li>fun String.addPetPhrase() = this + " 噗"</li>
+                                    </ul>
+                                    <li>}</li>
+                                    <li></li>
+
+                                    <li>open class Classes{</li>
+                                    <ul>
+                                        <li>open fun StudentIn304.sayHi(){</li>
+                                        <ul>
+                                            <li>println("${ <span class="tm-text-hiwhite-3">whoAmI()</span> }, 今天我是值日生")
+                                            </li>
+                                        </ul>
+                                        <li>}</li>
+                                    </ul>
+                                    <ul>
+                                        <li>open fun Butarou.sayHi(){</li>
+                                        <ul>
+                                            <li>println("${ <span class="tm-text-hipurple">whoAmI()</span> },
+                                                今天我是值日生".addPetPhrase()) <span class="tm-text-comment"> //<span
+                                                        class="tm-text-hireceiver"> Butarou</span>.whoAmI()`,this
+                                                    被省略</span></li>
+                                            <li>this@Classes.<span class="tm-text-higrey">whoAmI()</span><span
+                                                    class="tm-text-comment"> //<span
+                                                        class="tm-text-hiblue">Classes</span>.whoAmI()</span></li>
+                                        </ul>
+                                        <li>}</li>
+                                    </ul>
+                                    <ul>
+                                        <li>fun <span class="tm-text-higrey">whoAmI()</span>{</li>
+                                        <ul>
+                                            <li>println("這裡是304教室")</li>
+                                        </ul>
+                                        <li>}</li>
+                                    </ul>
+                                    <ul>
+                                        <li>fun saySomthing(s: StudentIn304){</li>
+                                        <ul>
+                                            <li> s.sayHi()</li>
+                                        </ul>
+                                        <li>}</li>
+                                    </ul>
+                                    <li>}</li>
+                                    <li></li>
+
+                                </ul>
+
+                            </div>
+                        </div>
+                        <ul>
+                            <li>如果恰巧 Classes 類別中也有同名方法<span class="tm-text-higrey"> whoAmI() </span>，Extension
+                                function 所呼叫的 whoAmI() 還是以擴展的那個類別中的 whoAmI() 為主，此時我們稱該類別為 <span
+                                    class="tm-text-hireceiver"> Extension receiver</span>。如果想要呼叫
+                                Classes 這個類裡的<span class="tm-text-higrey"> whoAmI() </span>可以使用 this@Classes.whoAmI()
+                                ，此時<span class="tm-text-hiblue"> Classes</span> 我們稱之為
+                                <span class="tm-text-hiblue"> dispatch receiver</span></li>
+                            <li>將 Extension function 放進 Classes 裡之後，就剝奪了 top level funciton 的特性，main 方法中看不到
+                                sayHi()，只有在宣告這個函式的類別自己看得到，因此在多加了一個 saySomthing() 讓外界也能使用。</li>
+                        </ul>
+                        <sapn>創造一個 EnglishClass 繼承 Classes</sapn>
+                        <div class="tm-code-block-b">
+                            <div class="tm-code-line">
+                                <ul>
+                                    <li>class EnglishClass : Classes(){</li>
+                                    <ul>
+                                        <li>override fun StudentIn304.sayHi() {</li>
+                                        <ul>
+                                            <li>println("${whoAmI()}, 我是英文小老師")
+                                            </li>
+                                        </ul>
+                                        <li>}</li>
+                                    </ul>
+                                    <ul>
+                                        <li> override fun Butarou.sayHi() {</li>
+                                        <ul>
+                                            <li> println("${whoAmI()}, 我是英文小老師".addPetPhrase())</li>
+
+                                        </ul>
+                                        <li>}</li>
+                                    </ul>
+                                    <li>}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <ul><li>要注意的是此例中 EnglishClass 沒有複寫 saySomthing() 這個方法，在使用的時候參數類別並不明顯，很容易在複雜的繼承關係中迷失方向。(豬太郎都沒有特色了 噗)</li></ul>
+                        <div class="tm-code-block-b">
+                            <div class="tm-code-line">
+                                <ul>
+                                    <li>fun main(){</li>
+                                    <ul>
+                                        <li>Classes().saySomthing(Butarou())            <span class="tm-text-comment">//我是豬太郎, 今天我是值日生</span></li>
+                                        <li>EnglishClass().saySomthing(Butarou())       <span class="tm-text-comment">//我是豬太郎, 我是英文小老師</span></li>
+                                        <li> EnglishClass().saySomthing(StudentIn304()) <span class="tm-text-comment">//我是三年四班的學生, 我是英文小老師</span></li>
+                                    </ul>
+                                    <li></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section><!-- id="section-extension-subtype"-->
+
+                </div>
+            </section> <!-- id="notepage"-->
+        </div>
+
+    </div>
+
+    <div class="nav-cat-menu" data-tag="blog"></div>
+
+    <div class="tm-bottom-container">
+        <!-- TO BE CONTINEUE-->
+    </div>
+    <script src="../../../../index.bundle.js"></script>
+</body>
+
+</html>
