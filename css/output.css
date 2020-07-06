@@ -669,6 +669,9 @@ body {
   overflow-x: hidden;
   background: #25332e; }
 
+.g-body {
+  overflow-y: scroll; }
+
 .note-body {
   font-family: Kalam, cursive, "Long Cang", handwritten;
   font-size: 19px;
