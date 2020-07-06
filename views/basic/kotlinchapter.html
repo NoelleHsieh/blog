@@ -3,3 +3,17 @@
     <li class="ch-li-item" data-type="kotlin"  data-chapter="10">Chapter 10 Collection</li>
     <li class="ch-li-item" data-type="kotlin"  data-chapter="18">Chapter 18 Extension</li>
 </ul>
+
+<script>
+    addchapter();
+    const addchapter= function() {
+        let _ch = $(event.currentTarget).attr('data-chapter');
+        console.log(_ch);
+        let path_nav ='https://noellehsieh.github.io/blog/views/studies/kotlin/big_nerd_ranch_guide/'+kotlin_chapter[_ch];
+
+        $('#ch-li').hide();
+        $('#ch-content').load(path_nav);
+        $('#ch-content').show();
+    
+    }
+</script>
