@@ -10,6 +10,8 @@
     $('.ch-li-item').on('click', function(event){addchapter(event)});
     const addchapter= function(event) {
         let _ch = $(event.currentTarget).attr('data-chapter');
+        console.log(event.currentTarget);
+        console.log($(event.currentTarget).attr('class'));
         console.log(_ch);
         let path_nav ='https://noellehsieh.github.io/blog/views/studies/kotlin/big_nerd_ranch_guide/'+kotlin_chapter[_ch];
 
