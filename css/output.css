@@ -278,6 +278,27 @@
   .list9 > ul li + li {
     border-top: 1px solid rgba(255, 255, 255, 0.2); }
 
+.list6 {
+  width: 80vw;
+  height: 100vh; }
+  .list6 > ul {
+    counter-reset: index;
+    padding: 0;
+    max-width: 300px;
+    /* List element */
+    /* Element separation */ }
+    .list6 > ul > li {
+      counter-increment: index;
+      display: flex;
+      align-items: center;
+      padding: 12px 0;
+      box-sizing: border-box; }
+      .list6 > ul > li:hover {
+        background-color: gainsboro;
+        color: black; }
+    .list6 > ul li + li {
+      border-top: 1px solid rgba(255, 255, 255, 0.2); }
+
 .nav-cat,
 .menu {
   display: flex;
@@ -436,21 +457,21 @@ body,
   left: 200%; }
 
 #p1 {
-  background-image: url(../img/photo-06.jpg);
+  background-image: black;
   background-size: 100% 100%;
   background-repeat: no-repeat; }
 
 #p2 {
-  background: tomato; }
+  background: transparent; }
 
 #p3 {
-  background: gold; }
+  background: transparent; }
 
 #p4 {
-  background: deeppink; }
+  background: transparent; }
 
 #p5 {
-  background: rebeccapurple; }
+  background: transparent; }
 
 #t2:target #p2,
 #t3:target #p3,
@@ -466,7 +487,7 @@ body,
 #t3:target #p1,
 #t4:target #p1,
 #t5:target #p1 {
-  background-image: url(../img/photo-06.jpg);
+  background-image: black;
   background-size: 100% 100%;
   background-repeat: no-repeat; }
 
@@ -503,9 +524,37 @@ body,
   font-size: 1.5rem;
   display: none; }
 
+.menu-item .i2 {
+  display: none;
+  position: absolute;
+  text-align: start;
+  top: 25px;
+  left: 100px; }
+
 .menu-item {
   position: relative;
   width: 100%; }
+
+.menu-item a {
+  color: #fff; }
+
+.menu-item .i1 {
+  display: none;
+  position: absolute;
+  top: 25px;
+  width: 100%; }
+
+#e1:target {
+  display: block;
+  color: #fff; }
+
+.e1-item:hover {
+  background-color: white;
+  color: #000; }
+
+.e1-item:hover span {
+  background-color: white;
+  color: #000; }
 
 .menu-vertical .icon {
   margin: 30px 0;
@@ -521,7 +570,7 @@ body,
 .menu-vertical .menu-item:hover .icon {
   opacity: 0.5; }
 
-.menu-vertical .menu-item:hover .menu-text {
+.menu-vertical .menu-item:hover .menu-text, .menu-vertical .menu-item:hover .i1, .menu-vertical .menu-item:hover .i2 {
   display: block; }
 
 .page .icon .title {
@@ -574,13 +623,6 @@ a {
 
 .line-trough {
   text-decoration: line-through; }
-
-.outline-list ul {
-  width: 100%;
-  font-size: 50px;
-  list-style: none;
-  text-align: start;
-  margin-left: 30vw; }
 
 .page .icon {
   position: absolute;
