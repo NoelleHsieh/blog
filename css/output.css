@@ -886,6 +886,8 @@ section > p {
     background: rgba(249, 240, 240, 0.8);
     color: #333;
     width: 80vw;
+    height: 90vh;
+    overflow-y: scroll;
     margin: 0 auto; }
     @media (max-width: 891px) {
       .tm-textbox[data-color="white8"] {
