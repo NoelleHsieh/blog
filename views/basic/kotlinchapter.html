@@ -5,18 +5,24 @@
 </ul>
 
 <script>
-    //const kotlin_chapter = ['0','1','2','3','4','5','6','7','8','ch9_KotlinStdlib.html','ch10_collections.html','11','12','13','14','15','16','17', 'ch18_extensions.html'];
+    let kotlin_chapter;
+    let addchapter;
+    if(!kotlin_chapter){
 
-    //const addchapter= function(event) {
-    addchapter= function(event) {
-        let _ch = $(event.currentTarget).attr('data-chapter');
-    
-        let path_nav ='https://noellehsieh.github.io/blog/views/studies/kotlin/big_nerd_ranch_guide/'+kotlin_chapter[_ch];
+        kotlin_chapter = ['0','1','2','3','4','5','6','7','8','ch9_KotlinStdlib.html','ch10_collections.html','11','12','13','14','15','16','17', 'ch18_extensions.html'];
+    }
 
-        $('#ch-li').hide();
-        $('#ch-content').load(path_nav);
-        $('#ch-content').show();
+    if(!addchapter){
+        addchapter= function(event) {
+            let _ch = $(event.currentTarget).attr('data-chapter');
+        
+            let path_nav ='https://noellehsieh.github.io/blog/views/studies/kotlin/big_nerd_ranch_guide/'+kotlin_chapter[_ch];
+
+            $('#ch-li').hide();
+            $('#ch-content').load(path_nav);
+            $('#ch-content').show();
     
+        }
     }
     $('.ch-li-item').on('click', function(event){addchapter(event)});
 </script>
