@@ -552,6 +552,9 @@ body,
   background-color: white;
   color: #000; }
 
+.e1-item span{
+  color: #fff; }
+
 .e1-item:hover span {
   background-color: white;
   color: #000; }
@@ -600,7 +603,9 @@ a {
 
 .title,
 .hint {
-  display: block; }
+  display: block;
+  background-color: #0003;
+}
 
 .title {
   font-size: 38px; }
