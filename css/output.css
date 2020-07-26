@@ -759,8 +759,13 @@ section > p {
 .tm-nav-links {
   display: none;
   list-style: none;
-  margin-top: -280px; }
-
+  margin-top: -280px;
+background-color: #fff;}
+.tm-nav-item{
+  padding: 10px 40px;
+  display: block;
+  margin-bottom: 6px;
+  text-align: center; }
 .tm-nav-item .tm-nav-link {
   padding: 10px 40px;
   display: block;
