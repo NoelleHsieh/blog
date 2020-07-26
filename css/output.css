@@ -761,11 +761,12 @@ section > p {
   list-style: none;
   margin-top: -280px;
 }
-.tm-nav-item{
+.tm-nav-item .placeholder{
   padding: 10px 40px;
   display: block;
   margin-bottom: 6px;
   text-align: center; 
+  color: #8E8E8E;
   background-color: #fff;
 }
 .tm-nav-item .tm-nav-link {
