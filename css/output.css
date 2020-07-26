@@ -760,17 +760,20 @@ section > p {
   display: none;
   list-style: none;
   margin-top: -280px;
-background-color: #fff;}
+}
 .tm-nav-item{
   padding: 10px 40px;
   display: block;
   margin-bottom: 6px;
-  text-align: center; }
+  text-align: center; 
+  background-color: #fff;
+}
 .tm-nav-item .tm-nav-link {
   padding: 10px 40px;
   display: block;
   margin-bottom: 6px;
-  text-align: center; }
+  text-align: center; 
+}
   .tm-nav-item .tm-nav-link:link, .tm-nav-item .tm-nav-link:visited {
     color: #000;
     background-color: #fff; }
